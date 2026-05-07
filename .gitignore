@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual envs
+.venv/
+venv/
+env/
+.conda/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Secrets & local config
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+.hf_token
+.openai_key
+.anthropic_key
+
+# Data — pulled from HuggingFace at runtime, not stored in repo
+data/
+results/
+hf_dataset/
+cache/
+.cache/
+*.stp
+*.step
+*.svg
+*.stl
+# allow one tiny illustrative example if added later under examples/
+!examples/**/*.svg
+!examples/**/*.stp
+
+# Large artefacts
+*.zip
+*.tar.gz
+*.parquet
+*.pt
+*.bin
+*.ckpt
+*.safetensors
+*.h5
+
+# Logs
+*.log
+logs/
+runs/
+wandb/
