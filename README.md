@@ -74,25 +74,5 @@ python scripts/rerun_llm_judge_parallel.py \
 ```
 Output: `score.json` next to each `sample_<n>/`, plus updated `reports/records.json`.
 
-## Aggregation & paper tables
-```ruby
-RESULTS_ROOT=./results python scripts/bench_evaluate/generate_latex_tables_gemini.py --judge gemini
-# → results/bench_evaluate/reports/paper_tables_gemini.tex
-```
-
-Optional viewers for spot-checking:
-```ruby
-BENCH_STEP3_ROOT=./results/bench_step3 python scripts/bench_step3/build_viewer.py
-BENCH_STEP3_ROOT=./results/bench_step3 \
-TASK_ROOT=./results/reverse_step1/task RUBRIC_ROOT=./results/reverse_step2_rubric \
-python scripts/bench_step3/build_human_eval.py
-```
-
-Three-judge × human agreement (Pearson / Spearman / Kendall):
-```ruby
-BENCH_STEP3_ROOT=./results/bench_step3 HUMAN_EVAL_JSON=human_eval_scores.json \
-python scripts/bench_step3/agreement_three_judges.py
-```
-
 ## License
 Code: MIT. Dataset (released separately): CC BY 4.0.
