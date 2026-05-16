@@ -1,0 +1,21 @@
+# Cases for which the pipeline replaces every "STP -> SVG technical drawing"
+# step with "STP -> 3D rendered PNG (VTK)". This applies to:
+#   - task generation prompt   (svg_text block becomes a render-only note)
+#   - rubric generation prompt (same; SVG XML payload skipped)
+#   - alignment / VLM-as-judge:
+#       reference image: rendered from the dataset's <case>.stp file
+#                        (instead of rsvg-convert of <case>.svg)
+#       candidate image: VTK 3D render of the model's CadQuery code
+#                        (instead of DrawCAD 4-view SVG -> rsvg-convert PNG)
+#
+# Add curved / organic geometries here -- DrawCAD's edge-projection produces
+# poor 4-view drawings for them. One case name per line; '#' starts a comment.
+vase_wave_blossom
+vase_wave_dune
+vase_wave_fluted
+vase_wave_petal
+vase_wave_ripple
+vase_wave_scallop
+vase_wave_shell
+vase_wave_twist
+wave_vase

@@ -1,0 +1,25 @@
+{
+  "source_root": "${MUSE_SOURCE_ROOT:-data/source}",
+  "workspace_root": ".",
+  "drawcad_root": "${DRAWCAD_ROOT:-external/DrawCAD}",
+  "drawcad_runner": "${DRAWCAD_RUNNER:-external/drawcad_runner.py}",
+  "validator_root": "${VALIDATOR_ROOT:-external/validator}",
+  "python_executable": "${MUSE_PYTHON:-python3}",
+  "selected_tasks": ["table", "stool", "wave_vase"],
+  "models": [
+    {
+      "label": "gpt-4o",
+      "provider": "openai",
+      "model": "gpt-4o",
+      "api_key_env": "OPENAI_API_KEY",
+      "base_url": "https://api.openai.com/v1",
+      "temperature": 0.2
+    }
+  ],
+  "samples_per_task": 3,
+  "paper_size": "A3",
+  "generation_timeout_seconds": 180,
+  "execution_timeout_seconds": 90,
+  "max_code_chars": 24000,
+  "excel_filename": "judgement.xlsx"
+}

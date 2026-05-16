@@ -1,0 +1,11 @@
+# label | provider | model | api_key_env | base_url | temperature
+# Open-source ladder
+qwen-2.5-7b | openrouter | qwen/qwen-2.5-7b-instruct | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+llama-3.1-8b | openrouter | meta-llama/llama-3.1-8b-instruct | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+qwen-2.5-32b | openrouter | qwen/qwen-2.5-coder-32b-instruct | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+llama-3.3-70b | openrouter | meta-llama/llama-3.3-70b-instruct | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+deepseek-chat-v3 | openrouter | deepseek/deepseek-chat-v3-0324 | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+# Closed-source ladder
+gpt-4o-mini | openrouter | openai/gpt-4o-mini | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+gemini-2.5-flash | openrouter | google/gemini-2.5-flash | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2
+claude-sonnet-4 | openrouter | anthropic/claude-sonnet-4 | OPENROUTER_API_KEY | https://openrouter.ai/api/v1 | 0.2

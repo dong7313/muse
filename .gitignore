@@ -1,0 +1,36 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+.env
+.env.*
+!.env.example
+
+.venv/
+venv/
+.python-version
+
+.DS_Store
+
+# Local data / experiment outputs — never push these.
+data/
+out/
+results/
+external/
+hf_dataset/
+share/
+share.tgz
+
+# IDE
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log

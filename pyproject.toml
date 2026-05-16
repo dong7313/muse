@@ -1,0 +1,35 @@
+[project]
+name = "muse-benchmark"
+version = "0.1.0"
+description = "MUSE Text-to-CAD benchmark: task/rubric inference + candidate generation + LLM/VLM judge"
+requires-python = ">=3.10"
+dependencies = [
+    "cadquery>=2.4",
+    "vtk>=9.3",
+    "requests>=2.31",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+analysis = [
+    "scipy>=1.11",
+    "pandas>=2.1",
+    "openpyxl>=3.1",
+]
+
+[project.scripts]
+muse-cli = "judge_system.cli:main"
+muse-reverse = "judge_system.reverse_cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+judge_system = ["render_only_cases.txt", "prompts/*.py"]

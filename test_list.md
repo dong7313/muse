@@ -1,0 +1,10 @@
+- `stool`
+- `chair`
+- `table`
+- `vase_teardrop`
+- `pen_holder`
+- `business_card_holder`
+- `pegboard`
+- `handless_comb`
+- `cnc_shoe_rack_entry_bench`
+- `cnc_tv_stand_gallery`
