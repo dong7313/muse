@@ -12,7 +12,7 @@ validity → design-intent alignment**.
 | 🏠 Project page | https://dong7313.github.io/muse-benchmark/ |
 | 🏆 Leaderboard | https://dong7313.github.io/muse-benchmark/leaderboard.html |
 | 🤗 Dataset | https://huggingface.co/datasets/dongxiaoyu/MUSE |
-| 📑 Paper | NeurIPS 2026 Datasets & Benchmarks (coming soon) |
+| 📑 Paper | [arXiv:2605.28579](https://arxiv.org/abs/2605.28579) |
 
 ---
 
@@ -222,12 +222,15 @@ muse/
 ## Citation
 
 ```bibtex
-@inproceedings{muse2026,
-  title     = {MUSE: Benchmarking Manufacturable, Functional, and Assemblable Text-to-CAD Generation},
-  author    = {Anonymous},
-  booktitle = {NeurIPS Datasets and Benchmarks Track},
-  year      = {2026},
-  url       = {https://dong7313.github.io/muse-benchmark/}
+@article{dong2026muse,
+  title         = {MUSE: Benchmarking Manufacturable, Functional, and Assemblable Text-to-CAD Generation},
+  author        = {Dong, Xiaoyu and Li, Zhi and Wu, Xiao-Ming},
+  journal       = {arXiv preprint arXiv:2605.28579},
+  year          = {2026},
+  archivePrefix = {arXiv},
+  eprint        = {2605.28579},
+  primaryClass  = {cs.AI},
+  url           = {https://arxiv.org/abs/2605.28579}
 }
 ```
 
