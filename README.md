@@ -222,13 +222,12 @@ muse/
 ## Citation
 
 ```bibtex
-@article{dong2026muse,
+@misc{dong2026muse,
   title         = {MUSE: Benchmarking Manufacturable, Functional, and Assemblable Text-to-CAD Generation},
-  author        = {Dong, Xiaoyu and Li, Zhi and Wu, Xiao-Ming},
-  journal       = {arXiv preprint arXiv:2605.28579},
+  author        = {Xiaoyu Dong and Zhi Li and Xiao-Ming Wu},
   year          = {2026},
-  archivePrefix = {arXiv},
   eprint        = {2605.28579},
+  archivePrefix = {arXiv},
   primaryClass  = {cs.AI},
   url           = {https://arxiv.org/abs/2605.28579}
 }
