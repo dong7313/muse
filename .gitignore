@@ -20,7 +20,11 @@ venv/
 data/
 out/
 results/
-external/
+external/*
+!external/README.md
+!external/SOURCE_SHA256.json
+!external/DrawCAD/
+!external/validator/
 hf_dataset/
 share/
 share.tgz

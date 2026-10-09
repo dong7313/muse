@@ -1,0 +1,22 @@
+name: Installation smoke test
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: sudo apt-get update && sudo apt-get install -y librsvg2-bin libgl1
+      - run: python -m pip install -e . -c constraints-smoke.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/check_installation.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installation-${{ matrix.python }}
+          path: out/installation-check/
