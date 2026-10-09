@@ -1,6 +1,6 @@
-# Core versions exercised by the macOS Python 3.11 installation smoke test.
+# Core versions for the clean Ubuntu Python 3.11/3.12 installation checks.
 # Not a historical paper lockfile.
 cadquery==2.7.0
 cadquery-ocp==7.8.1.1.post1
-numpy==1.26.4
+numpy==2.2.6
 vtk==9.3.1

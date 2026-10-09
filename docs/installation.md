@@ -45,7 +45,9 @@ STEP/STL and a VTK PNG. This is an installation test, not a full benchmark run.
 On macOS 26.3, the box execution, OCCT checks, invalid-code rejection and
 four-view SVG/PNG passed with Python 3.11.13, CadQuery 2.7.0,
 cadquery-ocp 7.8.1.1.post1, NumPy 1.26.4 and VTK 9.3.1.
-`constraints-smoke.txt` pins these core packages, not every transitive dependency.
+The older local Conda environment is not a clean pip installation recipe.
+`constraints-smoke.txt` uses NumPy 2.2.6 to satisfy the current PyPI nlopt
+dependency and pins the other core packages above, not every transitive dependency.
 Python 3.13.5 / CadQuery 2.7.0 also passed, including the optional VTK
 STEP/STL/PNG check outside the macOS process sandbox.
 
