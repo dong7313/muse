@@ -25,16 +25,24 @@ The pipeline is: **(a) point the LLM at each design spec → generate CadQuery**
 ### 1. Install
 
 ```bash
-conda create -n muse python=3.10
+conda create -n muse python=3.11
 conda activate muse
-pip install -e .
+python -m pip install -e . -c constraints-smoke.txt
 brew install librsvg          # Linux: apt-get install librsvg2-bin
 
 cp .env.example .env          # then fill OPENROUTER_API_KEY
 ```
 
-External modules `DrawCAD` (4-view drawing) and `validator` (OCCT checks) must
-live under `external/` or be pointed at via `DRAWCAD_ROOT` / `VALIDATOR_ROOT`.
+The OCCT `validator` and four-view `DrawCAD` modules are **included in
+`external/`**; no separate download is needed. After installing, verify the
+local pipeline without API keys:
+
+```sh
+python scripts/check_installation.py
+```
+
+See [installation, Windows compatibility, and reproduction versions](docs/installation.md).
+Custom module copies can still be selected with `DRAWCAD_ROOT` / `VALIDATOR_ROOT`.
 
 ### 2. Pull the MUSE data
 
