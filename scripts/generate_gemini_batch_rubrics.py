@@ -215,7 +215,7 @@ def call_openrouter(api_key: str, model: str, prompt: str) -> dict[str, Any]:
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://local.codex.app",
+        "HTTP-Referer": "https://github.com/dong7313/muse",
         "X-Title": "judge_system gemini rubric batch",
     }
     payload = {

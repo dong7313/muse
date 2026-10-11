@@ -722,7 +722,7 @@ def run_inferred_taskplan_pipeline(
     if not inferred_cases:
         raise RuntimeError(f"No cases were inferred from source root: {working_source_root}")
 
-    generator = Path(__file__).resolve().parents[2] / "generate_taxonomy_rubrics.py"
+    generator = Path(__file__).resolve().parents[2] / "scripts" / "generate_taxonomy_rubrics.py"
     command = [
         sys.executable,
         str(generator),
@@ -789,19 +789,9 @@ def _flush_reports(run_root: Path, records: list[RunRecord], rubric_catalog_rows
 
 
 def export_excel_report(workspace_root: Path, run_root: Path, filename: str) -> Path:
-    script_path = workspace_root / "export_excel.mjs"
-    output_path = run_root / "reports" / filename
-    records_json = run_root / "reports" / "records.json"
-    rubric_catalog_json = run_root / "reports" / "rubric_catalog.json"
-    subprocess_env = os.environ.copy()
-    import shutil
-    node_path = os.environ.get("NODE_BIN") or shutil.which("node") or "node"
-    subprocess.run(
-        [node_path, str(script_path), str(records_json), str(rubric_catalog_json), str(output_path)],
-        check=True,
-        env=subprocess_env,
-    )
-    return output_path
+    from .report_export import export_workbook
+    return export_workbook(run_root / "reports", filename)
+
 
 
 def smoke_test(config: AppConfig) -> Path:

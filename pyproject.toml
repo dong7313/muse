@@ -8,6 +8,7 @@ dependencies = [
     "vtk>=9.3",
     "requests>=2.31",
     "numpy>=1.26",
+    "openpyxl>=3.1",
 ]
 
 [project.optional-dependencies]

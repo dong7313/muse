@@ -37,6 +37,8 @@ def create_png_preview(svg_path: Path, png_path: Path, timeout_seconds: int = 60
         if completed.returncode != 0:
             return False, (completed.stderr or completed.stdout).strip()
         return True, ""
+    except FileNotFoundError:
+        return False, "rsvg-convert is missing; install librsvg (see README installation instructions)."
     except subprocess.TimeoutExpired:
         return False, f"PNG preview render timed out after {timeout_seconds}s"
 

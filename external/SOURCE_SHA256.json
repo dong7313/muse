@@ -1,0 +1,16 @@
+{
+  "external/validator/validator.py": "e2cbfefd4402cebcb29653177c3d58e497b7096da17fa324f88af5eece278e08",
+  "external/validator/__init__.py": "3382cff3ac38cfae6b18289f453429d06c80164de650b11322a6b66bd5572bbe",
+  "external/DrawCAD/cad_to_svg.py": "005ed6c1cbd891d1ecdb33bfb18bd9996089cbe32e7b6469d44179d777460081",
+  "external/DrawCAD/renderer/isometric.py": "fd628419b0a7e8f315f5c92e0a909386077fd979a29d658db657a6c88aa41bbf",
+  "external/DrawCAD/renderer/hidden_line.py": "3a854e9aef01ce4081e5d8c6c35b74086b98e344488d20decaf03d2569ea9346",
+  "external/DrawCAD/renderer/__init__.py": "dbf29e1f3286b5811e2f6f410600135322b10fbc2361cdd54d77b86b0d876007",
+  "external/DrawCAD/renderer/orthographic.py": "617eec168588aadfbf54528dbdea899b47ff1e5bcff8bf64f4234c0bd993c5f6",
+  "external/DrawCAD/renderer/base.py": "4b9d33ffd814c7196487f30cbb8499959f930ebd978d082d8789df89d362f525",
+  "external/DrawCAD/svg/style.py": "be4feda72d6bc57c98695e9a00904bc166909abddaffe06721fc89c7062c2cc5",
+  "external/DrawCAD/svg/dimensions.py": "48587893d3fbd497a837af3009b5050b03b0524cc11fdb997da07438ec796118",
+  "external/DrawCAD/svg/__init__.py": "fb2ff829f91e3e765c0281e63f55b5db4d6f3750d66391da8a610f13fe5f9443",
+  "external/DrawCAD/svg/writer.py": "a3c33e54a9d1e11cf1a115d6201e2717fee9a893a6c11ebfdebdaf8277b6efb2",
+  "external/DrawCAD/utils/__init__.py": "eb2caea20b45345b654decfa134e3d0b65a9f285353202ab23ee4881d2374be4",
+  "external/DrawCAD/utils/scale.py": "1f465abe1a0758082610965987d63cace80c77dc79a4b77bad7ce19a598baa9c"
+}

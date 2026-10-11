@@ -30,8 +30,8 @@ DEFAULT_MAX_WORKERS = 4
 DEFAULT_TIMEOUT_SECONDS = 120
 DEFAULT_API_KEY_ENV = "OPENROUTER_API_KEY"
 DEFAULT_OPENROUTER_API_KEY = os.environ.get(DEFAULT_API_KEY_ENV, "")
-DEFAULT_DRAWCAD_ROOT = Path(os.environ.get("DRAWCAD_ROOT", Path(__file__).resolve().parents[3] / "external" / "DrawCAD")).resolve()
-DEFAULT_VALIDATOR_ROOT = Path(os.environ.get("VALIDATOR_ROOT", Path(__file__).resolve().parents[3] / "external" / "validator" / "validator")).resolve()
+DEFAULT_DRAWCAD_ROOT = Path(os.environ.get("DRAWCAD_ROOT", Path(__file__).resolve().parents[2] / "external" / "DrawCAD")).resolve()
+DEFAULT_VALIDATOR_ROOT = Path(os.environ.get("VALIDATOR_ROOT", Path(__file__).resolve().parents[2] / "external" / "validator")).resolve()
 DEFAULT_PYTHON_EXECUTABLE = Path(sys.executable).resolve()
 DEFAULT_ALIGNMENT_MODEL = "google/gemini-3.1-pro-preview"
 DEFAULT_RENDER_ONLY_CASES_PATH = (Path(__file__).resolve().parent / "render_only_cases.txt").resolve()
@@ -508,6 +508,13 @@ def _image_part(path: Path) -> dict[str, Any]:
     }
 
 
+def _case_markdown(root: Path, case: str, filename: str) -> Path:
+    primary = root / case / filename
+    alias = {"task.md": "design_description.md", "rubric.md": "evaluation_rubric.md"}.get(filename, filename)
+    alternate = root / case / alias
+    return primary if primary.is_file() or not alternate.is_file() else alternate
+
+
 def _run_alignment_judge(
     *,
     api_key: str,
@@ -535,7 +542,7 @@ def _run_alignment_judge(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://local.codex.app",
+            "HTTP-Referer": "https://github.com/dong7313/muse",
             "X-Title": "judge_system alignment judge",
         },
         json={
@@ -612,49 +619,6 @@ def _run_one_benchmark_case(
 ) -> BenchmarkCaseResult:
     is_render_only = bool(render_only_cases and case_name in render_only_cases)
     files = _find_case_root_files(raw_case_root)
-    py_text = _read_text(files.get("py"), max_chars=18000)
-    if not py_text:
-        return BenchmarkCaseResult(
-            case_name=case_name,
-            model_label=model.label,
-            sample_index=sample_index,
-            status="skipped",
-            message="Missing raw .py source",
-            code_path="",
-            prompt_path="",
-            sandbox_ok=False,
-            geometry_ok=False,
-            code_ok=False,
-            result_solid_count=0,
-            bbox_dx_mm=0.0,
-            bbox_dy_mm=0.0,
-            bbox_dz_mm=0.0,
-            gt_component_count=0,
-            svg_component_count_estimate=0,
-            component_count_match=False,
-            component_count_delta=0,
-            svg_path_count=0,
-            watertight=None,
-            self_intersection_free=None,
-            alignment_score=0.0,
-            alignment_summary="",
-            alignment_error="Missing raw .py source",
-            sandbox_error="Missing raw .py source",
-            geometry_issue_summary="",
-            svg_path="",
-            png_path="",
-            render_png_path="",
-            render_mesh_path="",
-            render_step_path="",
-            geometry_valid=False,
-            normal_consistency=None,
-            volume_valid=None,
-            bbox_valid=None,
-            occt_valid=None,
-            llm_judge_model=alignment_model,
-            llm_judge_breakdown_json="{}",
-        )
-
     task_text = _read_text(task_path, max_chars=20000)
     if not task_text:
         return BenchmarkCaseResult(
@@ -911,7 +875,10 @@ def _run_one_benchmark_case(
         #                       (out: runs/<case>/reference/<case>_render.png)
         #   - normal case:      rsvg-convert dataset's source SVG -> PNG
         reference_svg_png: Path | None = None
-        if is_render_only:
+        published_reference = raw_case_root / (f"{case_name}_stp_render.png" if is_render_only else f"{case_name}.png")
+        if published_reference.is_file():
+            reference_svg_png = published_reference
+        elif is_render_only:
             stp_source = files.get("stp") or files.get("step")
             if stp_source is None:
                 # Fall back to globbing for a STEP file in the case dir
@@ -1061,12 +1028,12 @@ def _run_benchmark(
         raise FileNotFoundError(f"Rubric root does not exist: {rubric_root}")
 
     if cases:
-        case_names = [name for name in cases if (task_root / name / "task.md").exists() and (rubric_root / name / "rubric.md").exists()]
+        case_names = [name for name in cases if (_case_markdown(task_root, name, "task.md")).exists() and (_case_markdown(rubric_root, name, "rubric.md")).exists()]
     else:
         case_names = sorted(
             p.name
             for p in task_root.iterdir()
-            if p.is_dir() and (p / "task.md").exists() and (rubric_root / p.name / "rubric.md").exists()
+            if p.is_dir() and _case_markdown(p.parent, p.name, "task.md").exists() and (_case_markdown(rubric_root, p.name, "rubric.md")).exists()
         )
 
     if not case_names:
@@ -1076,8 +1043,8 @@ def _run_benchmark(
 
     jobs: list[tuple[str, int, ModelSpec, Path, Path]] = []
     for case_name in case_names:
-        task_path = task_root / case_name / "task.md"
-        rubric_path = rubric_root / case_name / "rubric.md"
+        task_path = _case_markdown(task_root, case_name, "task.md")
+        rubric_path = _case_markdown(rubric_root, case_name, "rubric.md")
         for sample_index, model in enumerate(model_specs, start=1):
             jobs.append((case_name, sample_index, model, task_path, rubric_path))
 
@@ -1185,8 +1152,8 @@ def _run_benchmark(
 
     rubric_rows: list[dict[str, Any]] = []
     for case_name in case_names:
-        task_text = _read_text(task_root / case_name / "task.md")
-        rubric_text = _read_text(rubric_root / case_name / "rubric.md")
+        task_text = _read_text(_case_markdown(task_root, case_name, "task.md"))
+        rubric_text = _read_text(_case_markdown(rubric_root, case_name, "rubric.md"))
         if task_text and rubric_text:
             rubric_rows.append(
                 {
@@ -1391,7 +1358,7 @@ def _openrouter_chat(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://local.codex.app",
+            "HTTP-Referer": "https://github.com/dong7313/muse",
             "X-Title": "judge_system reverse task design inference",
         },
         json={
@@ -1736,7 +1703,7 @@ def _infer_one_rubric_case(
 ) -> RubricCaseResult:
     raw_files = _find_case_root_files(source_case_root)
     is_render_only = bool(render_only_cases and case_name in render_only_cases)
-    task_path = task_root / case_name / "task.md"
+    task_path = _case_markdown(task_root, case_name, "task.md")
     if not task_path.exists():
         return RubricCaseResult(
             case_name=case_name,
@@ -2030,7 +1997,7 @@ def infer_rubrics_from_task_and_raw(
         case_names = sorted(
             p.name
             for p in task_root.iterdir()
-            if p.is_dir() and (p / "task.md").exists()
+            if p.is_dir() and _case_markdown(p.parent, p.name, "task.md").exists()
         )
     if not case_names:
         raise RuntimeError(f"No usable task cases found under task_root={task_root}")
@@ -2194,7 +2161,7 @@ def run_reverse_pipeline(
         if not target_root.exists():
             return False
         for child in target_root.iterdir():
-            if child.is_dir() and (child / filename).exists():
+            if child.is_dir() and _case_markdown(target_root, child.name, filename).exists():
                 return True
         return False
 
@@ -2280,9 +2247,9 @@ def run_reverse_pipeline(
         for case_name in sorted(
             p.name
             for p in benchmark_task_root.iterdir()
-            if p.is_dir() and (p / "task.md").exists()
+            if p.is_dir() and _case_markdown(p.parent, p.name, "task.md").exists()
         ):
-            target = benchmark_rubric_root / case_name / "rubric.md"
+            target = _case_markdown(benchmark_rubric_root, case_name, "rubric.md")
             if target.exists():
                 rubric_results.append(
                     RubricCaseResult(

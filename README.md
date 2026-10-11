@@ -25,16 +25,24 @@ The pipeline is: **(a) point the LLM at each design spec → generate CadQuery**
 ### 1. Install
 
 ```bash
-conda create -n muse python=3.10
+conda create -n muse python=3.11
 conda activate muse
-pip install -e .
+python -m pip install -e . -c constraints-smoke.txt
 brew install librsvg          # Linux: apt-get install librsvg2-bin
 
-cp .env.example .env          # then fill OPENROUTER_API_KEY
+export OPENROUTER_API_KEY="your-key"  # required only for model calls
 ```
 
-External modules `DrawCAD` (4-view drawing) and `validator` (OCCT checks) must
-live under `external/` or be pointed at via `DRAWCAD_ROOT` / `VALIDATOR_ROOT`.
+The OCCT `validator` and four-view `DrawCAD` modules are **included in
+`external/`**; no separate download is needed. After installing, verify the
+local pipeline without API keys:
+
+```sh
+python scripts/check_installation.py
+```
+
+See [installation, Windows compatibility, and reproduction versions](docs/installation.md).
+Custom module copies can still be selected with `DRAWCAD_ROOT` / `VALIDATOR_ROOT`.
 
 ### 2. Pull the MUSE data
 
@@ -86,18 +94,26 @@ For each (case, model, sample) this produces under
 
 …plus `out/my_eval/reports/records.json` aggregating every sample row.
 
-### 5. Judge with Gemini-3.1-Pro (= Step 4)
+### 5. Judging and rerunning scores
+
+The reverse benchmark command performs alignment judging by default; use
+`--no-alignment` to generate and validate geometry without that judge.
+The report stores `llm_judge_score`, `llm_judge_summary` and the judge breakdown.
+
+The separate `scripts/rerun_llm_judge_parallel.py` is the **legacy taxonomy
+judge**. It requires `data/cleaned/<case>/task.md`, `plan.md`, and taxonomy
+rubric JSON under the configured rubric directory. It cannot directly consume
+the published dataset's Markdown rubrics and is not an interchangeable paper
+scoring protocol. For an existing legacy run, verify inputs before model calls:
 
 ```bash
 python scripts/rerun_llm_judge_parallel.py \
-    --config  configs/openrouter_eval.json \
-    --run-id  my_eval \
-    --max-workers 8
+    --config configs/openrouter_eval.json --run-root out/my_eval --preflight
+# Remove --preflight only after supplying the required legacy inputs.
 ```
 
-Writes a `score.json` next to each sample and updates `reports/records.json`
-with the Stage 3 columns: `functionality`, `manufacturability`,
-`assemblability`, and `final`.
+It writes CSV, Excel and viewer reports alongside records.json. Excel export
+uses the installed Python dependency openpyxl; no Node.js helper is required.
 
 ### 6. Read the results
 
@@ -105,9 +121,12 @@ with the Stage 3 columns: `functionality`, `manufacturability`,
 python scripts/bench_evaluate/package_share.py --run-id my_eval
 ```
 
-…or load `reports/records.json` directly. The same aggregation logic that
-produces the public leaderboard lives in `results/generate_latex_tables_gemini.py`
-in the build repo — copy it if you want the paper-style table.
+The package is saved to `out/my_eval/share/` and `out/my_eval/share.tgz`.
+It includes a viewer, scores and the referenced artifacts, with portable links.
+Use a new `--output` directory when packaging again. It is a results viewer,
+not the old blinded human-annotation interface. Do not use a share package as
+a guarantee that user-provided task text or generated source contains no private data.
+You can also load `reports/records.json` directly.
 
 ---
 
