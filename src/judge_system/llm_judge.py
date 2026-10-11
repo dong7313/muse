@@ -128,7 +128,7 @@ def judge_with_vlm(
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://local.codex.app",
+            "HTTP-Referer": "https://github.com/dong7313/muse",
             "X-Title": "judge_system llm judge",
         },
         json={

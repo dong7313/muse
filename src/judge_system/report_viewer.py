@@ -245,18 +245,21 @@ def _llm_category_scores(rows: list[dict], level: str, rubric_keys: set[str]) ->
     return result
 
 
-def build_viewer(records_path: Path, rubric_catalog_path: Path, output_path: Path) -> Path:
+def build_viewer(records_path: Path, rubric_catalog_path: Path, output_path: Path, *, relative_artifacts: bool = False) -> Path:
     rows = json.loads(records_path.read_text(encoding="utf-8"))
     rubric_catalog = json.loads(rubric_catalog_path.read_text(encoding="utf-8"))
     overall, per_model = _build_summary(rows)
 
+    def artifact_url(path):
+        return quote(path, safe="/") if relative_artifacts else _to_viewer_url(output_path, path)
+
     for row in rows:
-        row["svg_url"] = _to_viewer_url(output_path, row.get("svg_path", ""))
-        row["png_url"] = _to_viewer_url(output_path, row.get("png_path", ""))
-        row["render_png_url"] = _to_viewer_url(output_path, row.get("render_png_path", ""))
-        row["render_mesh_url"] = _to_viewer_url(output_path, row.get("render_mesh_path", ""))
-        row["render_step_url"] = _to_viewer_url(output_path, row.get("render_step_path", ""))
-        row["code_url"] = _to_viewer_url(output_path, row.get("code_path", ""))
+        row["svg_url"] = artifact_url(row.get("svg_path", ""))
+        row["png_url"] = artifact_url(row.get("png_path", ""))
+        row["render_png_url"] = artifact_url(row.get("render_png_path", ""))
+        row["render_mesh_url"] = artifact_url(row.get("render_mesh_path", ""))
+        row["render_step_url"] = artifact_url(row.get("render_step_path", ""))
+        row["code_url"] = artifact_url(row.get("code_path", ""))
         row["rubric_breakdown"] = json.loads(row.get("rubric_breakdown_json") or "[]")
         row["rubric_primary_breakdown"] = _breakdown_values(row.get("rubric_primary_breakdown_json", ""), "dict")
         row["rubric_category_breakdown"] = _breakdown_values(row.get("rubric_category_breakdown_json", ""), "dict")

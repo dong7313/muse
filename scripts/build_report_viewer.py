@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from src.judge_system.report_viewer import build_viewer
+from judge_system.report_viewer import build_viewer
 
 
 def main() -> None:

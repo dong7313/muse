@@ -95,7 +95,7 @@ class OpenRouterChatProvider:
                     headers={
                         "Authorization": f"Bearer {api_key}",
                         "Content-Type": "application/json",
-                        "HTTP-Referer": "https://local.codex.app",
+                        "HTTP-Referer": "https://github.com/dong7313/muse",
                         "X-Title": "judge_system code generation",
                     },
                     json={
@@ -139,7 +139,7 @@ class OpenRouterChatProvider:
                     headers={
                         "Authorization": f"Bearer {api_key}",
                         "Content-Type": "application/json",
-                        "HTTP-Referer": "https://local.codex.app",
+                        "HTTP-Referer": "https://github.com/dong7313/muse",
                         "X-Title": "judge_system task-plan inference",
                     },
                     json={
